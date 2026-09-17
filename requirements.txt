@@ -1,0 +1,21 @@
+# Everything needed to run the scripts, the notebook and the tests.
+# Run from the repository root (the folder containing this file):
+#
+#     pip install -r requirements.txt
+#
+# Tested with Python 3.12.13 and the versions listed in README.md, section 3.
+
+# The neurobridge library in this repository, plus BrainFlow (Unicorn headset
+# driver) and the plotting/table extras.
+-e .[brainflow,analysis]
+
+numpy>=2.0            # the notebook uses np.trapezoid, added in NumPy 2.0
+scipy>=1.10
+scikit-learn>=1.3
+pandas>=2.0
+matplotlib>=3.7
+joblib>=1.3
+pyyaml>=6.0
+
+jupyter               # to open the notebook
+pytest>=7.4           # to run the test suite

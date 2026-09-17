@@ -1,0 +1,80 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "neurobridge"
+version = "0.1.0"
+description = "Hardware-agnostic real-time EEG and BCI platform for teaching and studying brain-computer interfaces in schools"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10"
+authors = [{ name = "TODO: your name", email = "todo@example.edu" }]
+keywords = ["EEG", "BCI", "neurofeedback", "education", "real-time", "SSVEP"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Intended Audience :: Education",
+  "License :: OSI Approved :: BSD License",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Medical Science Apps.",
+  "Topic :: Education",
+]
+
+# Runtime dependencies are deliberately minimal. The WebSocket transport is
+# implemented on the standard library, so a locked-down school machine needs
+# only the scientific Python stack that is already there.
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "scikit-learn>=1.3",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+brainflow = ["brainflow>=5.10"]          # real headsets, including the Unicorn
+lsl = ["pylsl>=1.16"]                    # any headset/app streaming over Lab Streaming Layer
+mne = ["mne>=1.6"]                       # offline analysis interoperability
+analysis = ["pandas>=2.0", "matplotlib>=3.7"]   # live scope, event tables
+dev = [
+  "pytest>=7.4",
+  "pytest-cov>=4.1",
+  "ruff>=0.4",
+  "mypy>=1.8",
+]
+all = ["neurobridge[brainflow,lsl,mne,analysis]"]
+
+[project.urls]
+Homepage = "https://github.com/TODO/neurobridge"
+Documentation = "https://github.com/TODO/neurobridge#readme"
+Issues = "https://github.com/TODO/neurobridge/issues"
+
+[project.scripts]
+neurobridge = "neurobridge.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/neurobridge"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src/", "tests/", "configs/", "examples/", "web/", "docs/",
+           "README.md", "ARCHITECTURE.md", "LICENSE", "CITATION.cff"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+markers = ["hardware: requires a physical EEG headset"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "C4", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_unused_ignores = true
+ignore_missing_imports = true
